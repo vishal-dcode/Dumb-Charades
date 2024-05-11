@@ -7,6 +7,7 @@ import { FaLinkedin } from "react-icons/fa";
 export default function App() {
   const [selectedCategories, setSelectedCategories] = useState(['All']);
   const [generatedClue, setGeneratedClue] = useState('Click on Generate Clue');
+  const [usedClues, setUsedClues] = useState([]);
 
   const handleCategoryChange = (category) => {
     if (category === 'All') {
@@ -24,7 +25,7 @@ export default function App() {
     }
   };
 
-  const handleClick = () => {
+const handleClick = () => {
     let selectedData = [];
     if (selectedCategories.includes('All')) {
       selectedData = Object.values(database).flat();
@@ -32,7 +33,24 @@ export default function App() {
       selectedData = selectedCategories.flatMap(category => database[category] || []);
     }
 
-    const randomClue = selectedData[Math.floor(Math.random() * selectedData.length)];
+    // Filter out used clues
+    const filteredData = selectedData.filter(clue => !usedClues.includes(clue));
+
+    // If all clues have been used, reset usedClues
+    if (filteredData.length === 0) {
+      setUsedClues([]);
+      setGeneratedClue('No more clues available');
+      return;
+    }
+
+    // Randomly select a clue from filteredData
+    const randomIndex = Math.floor(Math.random() * filteredData.length);
+    const randomClue = filteredData[randomIndex];
+
+    // Update usedClues
+    setUsedClues(prevUsedClues => [...prevUsedClues, randomClue]);
+
+    // Set generatedClue
     setGeneratedClue(randomClue);
   };
 
@@ -41,8 +59,8 @@ export default function App() {
       <main className='App flex items-center text-center flex-col justify-around min-h-[70vh]'>
         <h1 className='title font-bold text-gray-300 text-5xl sm:text-6xl'>Dumb Charades</h1>
 
-        <div className='app-wrapper w-full relative text-gray-300 border border-[#646cff] bg-[#1d1d1d] rounded-[16px] grid gap-2 max-w-[1100px] p-[8px] w-full'>
-          <div className="dropdown px-2 py-10 flex justify-center">
+        <div className='app-wrapper w-full relative text-gray-300 border border-[#646cff] bg-[#1d1d1d] rounded-[16px] grid gap-1 max-w-[1100px] p-[4px] w-full'>
+          <div className="dropdown px-5 py-10 flex justify-center">
             <div className='dropdown-content text-md max-w-[700px] flex flex-wrap justify-center gap-3'>
                 <label className="container whitespace-nowrap flex gap-1 w-auto">
                 <input type="checkbox" checked={selectedCategories.includes('All')} onChange={() => handleCategoryChange('All')} />
@@ -58,7 +76,7 @@ export default function App() {
               ))}
             </div>
           </div>
-          <input className='input w-full py-3 text-white rounded-tl-[12px] rounded-br-[6px] rounded-tr-[12px] rounded-bl-[6px] text-center text-[24px] font-bold bg-gray-600' type="text" value={generatedClue} readOnly />
+          <input className='input w-full overflow-scroll p-3 text-white rounded-tl-[12px] rounded-br-[6px] rounded-tr-[12px] rounded-bl-[6px] text-center text-[24px] font-bold bg-gray-600' type="text" value={generatedClue} readOnly />
           <button className='generate-btn p-3 text-md font-medium border-none uppercase bg-[#646cff] text-white rounded-tl-[6px] rounded-br-[12px] rounded-tr-[6px] rounded-bl-[12px]' onClick={handleClick}>Generate Clue</button>
         </div>
 
