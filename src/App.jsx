@@ -57,18 +57,18 @@ const handleClick = () => {
 
   return (
       <main className='App flex items-center text-center flex-col justify-around min-h-[70vh]'>
-        <h1 className='title font-bold text-gray-300 text-5xl sm:text-6xl'>Dumb Charades</h1>
+        <h1 className='title font-bold text-gray-300 text-5xl sm:text-6xl py-10'>Dumb Charades</h1>
 
         <div className='app-wrapper w-full relative text-gray-300 border border-[#646cff] bg-[#1d1d1d] rounded-[16px] grid gap-1 max-w-[1100px] p-[4px] w-full'>
           <div className="dropdown px-5 py-10 flex justify-center">
             <div className='dropdown-content text-md max-w-[700px] flex flex-wrap justify-center gap-3'>
-                <label className="container whitespace-nowrap flex gap-1 w-auto">
+                <label className="container whitespace-nowrap flex items-center justify-center gap-1 w-auto">
                 <input type="checkbox" checked={selectedCategories.includes('All')} onChange={() => handleCategoryChange('All')} />
                 All
                 <span className="checkmark"></span>
               </label>
               {Object.keys(database).map(category => (
-                <label key={category} className="container whitespace-nowrap flex gap-1 w-auto">
+                <label key={category} className="container whitespace-nowrap flex items-center justify-center gap-1 w-auto">
                   <input type="checkbox" checked={selectedCategories.includes(category)} onChange={() => handleCategoryChange(category)} />
                   {category}
                   <span className="checkmark"></span>
@@ -76,14 +76,14 @@ const handleClick = () => {
               ))}
             </div>
           </div>
-          <input className='input w-full overflow-scroll p-3 text-white rounded-tl-[12px] rounded-br-[6px] rounded-tr-[12px] rounded-bl-[6px] text-center text-[24px] font-bold bg-gray-600' type="text" value={generatedClue} readOnly />
+          <textarea rows="1" className={`h-[58px] ${generatedClue === 'No more clues available' && 'bg-red-400'} input w-full overflow-scroll p-3 text-white rounded-tl-[12px] rounded-br-[6px] rounded-tr-[12px] rounded-bl-[6px] text-center text-[24px] font-bold bg-gray-600`} type="text" value={generatedClue} readOnly />
           <button className='generate-btn p-3 text-md font-medium border-none uppercase bg-[#646cff] text-white rounded-tl-[6px] rounded-br-[12px] rounded-tr-[6px] rounded-bl-[12px]' onClick={handleClick}>Generate Clue</button>
         </div>
 
         <div className='footer fixed text-sm whitespace-nowrap bottom-4 right-4 flex items-center gap-2 justify-center text-gray-200'>
-          <span className='credit italic font-light'>Made by <a className='text-[#646cff] font-medium' href="https://github.com/vishal-dcode">Vishal Vishwakarma</a></span>-
-          <a className='flex items-center justify-center hover:text-[#535bf2]' href="https://github.com/vishal-dcode"><FaGithub /></a>
-          <a className='flex items-center justify-center hover:text-[#535bf2]' href="https://www.linkedin.com/in/vishal-s-vishwakarma/"><FaLinkedin /></a>
+          <span className='credit italic font-light'>Made by <a className='text-[#646cff] font-medium' href="https://vishaal.vercel.app/" target='_blank'>Vishal Vishwakarma</a></span>-
+          <a className='flex items-center justify-center hover:text-[#535bf2]' href="https://github.com/vishal-dcode" target='_blank'><FaGithub /></a>
+          <a className='flex items-center justify-center hover:text-[#535bf2]' href="https://www.linkedin.com/in/vishal-s-vishwakarma/" target='_blank'><FaLinkedin /></a>
         </div>
       </main>
   );
